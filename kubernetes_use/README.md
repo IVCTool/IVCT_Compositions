@@ -29,3 +29,25 @@ and make it available for other scripts
 
 01_nfs-pv.yaml  
 02_nfs-pvc.yaml
+
+### Execution of images with only one task
+To provide information and necessary files for IVCT tests,
+containers from some images  are started only once.
+They copy files to the shared data area.
+
+In the Kubernetes application, these executions are called jobs
+
+#### 11_runtime-config_job.yaml  
+ContainerName:  runtime-config-job  --  image:  ivct/runtime-config:4.1.0
+
+Should be executed relatively early in order to create the necessary directory structures in the shared directory and transfer various data to it.
+e.g. the Directories  ( with content)  Badges IVCTsut  TestSuites  + Datei IVCT.properties
+
+MountPoint: /runtimeconfig   (name can be freely chosen,   to the NFS-Volume)
+
+important is here: 
+ [Command]   and  [Arguments] :  
+ -r /root/conf/TestSuites , -r /root/conf/Badges , -r /root/conf/IVCTsut , /root/conf/IVCT.properties   /runtimeconfig
+
+
+
