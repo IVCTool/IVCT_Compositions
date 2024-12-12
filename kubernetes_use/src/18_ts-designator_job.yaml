@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ts-designator
+  # namespace: brf-test-namespace
+spec:
+  template:
+    spec:
+      containers:
+      - args:
+        - -r
+        - /root/conf/TestSuites/TS_Designator-1.0.2-SNAPSHOT
+        - /runtimeconfig/TestSuites
+        command:
+        - cp
+        image: ivct/ts-designator:1.0.2-SNAPSHOT
+        imagePullPolicy: Always
+        name: ts-designator
+        volumeMounts:
+        - mountPath: /runtimeconfig
+          name: vol0
+      restartPolicy: Never
+      volumes:
+      - name: vol0
+        persistentVolumeClaim:
+          claimName: nfs-pv-claim

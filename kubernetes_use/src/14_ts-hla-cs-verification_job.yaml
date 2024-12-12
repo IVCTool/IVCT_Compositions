@@ -1,0 +1,27 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ts-hla-cs-verification
+  # namespace: brf-test-namespace
+spec:
+  template:
+    spec:
+      containers:
+      - args:
+        - -r
+        - /root/conf/TestSuites/TS_CS_Verification-2.1.2-SNAPSHOT
+        - /runtimeconfig/TestSuites
+        command:
+        - cp
+        image: ivct/ts-hla-cs-verification:2.1.2-SNAPSHOT
+        imagePullPolicy: Always
+        #name: ts-hla-cs-verification
+        name: ts-hla-cs-verification-tests
+        volumeMounts:
+        - mountPath: /runtimeconfig
+          name: vol0
+      restartPolicy: Never
+      volumes:
+      - name: vol0
+        persistentVolumeClaim:
+          claimName: nfs-pv-claim

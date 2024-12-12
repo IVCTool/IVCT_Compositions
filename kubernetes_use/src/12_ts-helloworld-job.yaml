@@ -1,0 +1,26 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ts-helloworld-job
+  # namespace: brf-test-namespace
+spec:
+  template:
+    spec:
+      containers:
+      - args:
+        - -r
+        - /root/conf/TestSuites/TS_HelloWorld-2.1.3-SNAPSHOT
+        - /runtimeconfig/TestSuites
+        command:
+        - cp
+        image: ivct/ts-helloworld:2.1.3-SNAPSHOT
+        imagePullPolicy: Always
+        name: ts-helloworld
+        volumeMounts:
+        - mountPath: /runtimeconfig
+          name: vol0
+      restartPolicy: Never
+      volumes:
+      - name: vol0
+        persistentVolumeClaim:
+          claimName: nfs-pv-claim
