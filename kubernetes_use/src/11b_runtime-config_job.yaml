@@ -1,0 +1,31 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: runtime-config-job
+  # namespace: brf-test-namespace
+spec:
+  template:
+    spec:
+      containers:
+      - args:
+        - -r
+        - /root/conf/TestSuites
+        - -r
+        - /root/conf/Badges
+        - -r
+        - /root/conf/IVCTsut
+        - /root/conf/IVCT.properties
+        - /runtimeconfig
+        command:
+        - cp
+        image: ivct/runtime-config:4.1.0
+        imagePullPolicy: Always
+        name: runtime-config-job
+        volumeMounts:
+        - mountPath: /runtimeconfig
+          name: vol0
+      restartPolicy: Never
+      volumes:
+      - name: vol0
+        persistentVolumeClaim:
+          claimName: nfs-pv-claim
