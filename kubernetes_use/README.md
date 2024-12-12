@@ -25,8 +25,7 @@ First of all, it must be ensured that there is a data directory to which various
 One possibility is to use a directory provided by an NFS server.
 
 The scripts 01* and 02* establish a connection to an NFS share, 
-and make it available for other scripts 
-
+and make it available for other scripts  
 01_nfs-pv.yaml  
 02_nfs-pvc.yaml
 
@@ -41,13 +40,67 @@ In the Kubernetes application, these executions are called jobs
 ContainerName:  runtime-config-job  --  image:  ivct/runtime-config:4.1.0
 
 Should be executed relatively early in order to create the necessary directory structures in the shared directory and transfer various data to it.
-e.g. the Directories  ( with content)  Badges IVCTsut  TestSuites  + Datei IVCT.properties
-
-MountPoint: /runtimeconfig   (name can be freely chosen,   to the NFS-Volume)
-
+e.g. the Directories  ( with content)  Badges IVCTsut  TestSuites  + Datei IVCT.properties  
+Variables:  No further variables necessary  
+MountPoint: /runtimeconfig   (name can be freely chosen,   to the NFS-Volume)  
 important is here: 
  [Command]   and  [Arguments] :  
  -r /root/conf/TestSuites , -r /root/conf/Badges , -r /root/conf/IVCTsut , /root/conf/IVCT.properties   /runtimeconfig
 
+#### IVCT.properties
+Now the file IVCT.properties should be located in " /runtimeconfig", in the shared directory, here an NFS-volume.
+This will later be read by other applications for their start.
+Values of the necessary variables that differ from the standard can be entered here.
+
+
+####  12_ts-helloworld-job.yaml
+JobName:  ts-helloworld-job    image: ivct/ts-helloworld:2.1.3-SNAPSHOT  
+Variables:  No further variables necessary  
+MountPoint: /runtimeconfig   ( to the NFS-Volume , name can be freely chosen)  
+Command:    cp    -r /root/conf/TestSuites/TS_HelloWorld-2.1.3-SNAPSHOT /runtimeconfig/TestSuites
+
+####  13_ts-hla-encoding-rules_job.yaml
+Name: ts-hla-encoding-rules      image: ivct/ts-hla-encoding-rules:2.1.2-SNAPSHOT  
+MountPoint:     /runtimeconfig  
+[Command]  [Arguments]
+cp   -r /root/conf/TestSuites/TS_HLA_EncodingRulesTester-2.1.2-SNAPSHOT  /runtimeconfig/TestSuites
+
+
+#### 14_ts-hla-cs-verification_job
+Name:  ts-hls-cs-verification   image: ivct/ts-hla-cs-verification:2.1.2-SNAPSHOT  
+MountPoint:     /runtimeconfig  
+Command]  [Arguments]
+cp            -r /root/conf/TestSuites/TS_CS_Verification-2.1.2-SNAPSHOT /runtimeconfig/TestSuites
+
+
+#### 15_ts-hla-service_job  
+Name:  ts-hla-services  image:   ivct/ts-hla-services:2.1.2-SNAPSHOT  
+MountPoint:     /runtimeconfig  
+Command]  [Arguments]
+cp            -r  /root/conf/TestSuites/TS_HLA_Services-2.1.2-SNAPSHOT /runtimeconfig/TestSuites
+
+
+#### 16_ts-hla-object_job
+Name: ts-hla-object    image:   ivct/ts-hla-object:2.1.2-SNAPSHOT  
+MountPoint:     /runtimeconfig  
+Command]  [Arguments]
+cp            -r  /root/conf/TestSuites/TS_HLA_Object-2.1.2-SNAPSHOT /runtimeconfig/TestSuites
+
+
+#### 17_ts-hla-declaration_job
+Name: ts-hla-declaration   image:   ivct/ts-hla-declaration:2.1.2-SNAPSHOT  
+MountPoint:     /runtimeconfig  
+Command]  [Arguments]
+cp            -r  /root/conf/TestSuites/TS_HLA_Declaration-2.1.2-SNAPSHOT   /runtimeconfig/TestSuites
+
+
+####  18_ts-designator_job
+ Name: ts-designator   image:  ivct/ts-designator:1.0.2-SNAPSHOT  
+MountPoint:     /runtimeconfig  
+[Command]  [Arguments]
+cp                 -r /root/conf/TestSuites/TS_Designator-1.0.2-SNAPSHOT /runtimeconfig/TestSuites
+
+### Execution of images for deployments and services
+....
 
 
