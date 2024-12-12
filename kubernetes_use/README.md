@@ -42,7 +42,7 @@ ContainerName:  runtime-config-job  --  image:  ivct/runtime-config:4.1.0
 Should be executed relatively early in order to create the necessary directory structures in the shared directory and transfer various data to it.
 e.g. the Directories  ( with content)  Badges IVCTsut  TestSuites  + Datei IVCT.properties  
 Variables:  No further variables necessary  
-MountPoint: /runtimeconfig   (name can be freely chosen,   to the NFS-Volume)  
+MountPoint: /runtimeconfig    ( to the NFS-Volume, name can be freely chosen)  
 important is here: 
  [Command]   and  [Arguments] :  
  -r /root/conf/TestSuites , -r /root/conf/Badges , -r /root/conf/IVCTsut , /root/conf/IVCT.properties   /runtimeconfig
