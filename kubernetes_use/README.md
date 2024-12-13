@@ -101,6 +101,36 @@ MountPoint:     /runtimeconfig
 cp                 -r /root/conf/TestSuites/TS_Designator-1.0.2-SNAPSHOT /runtimeconfig/TestSuites
 
 ### Execution of images for deployments and services
-....
+
+####  18_ts-designator_job
+ Name: ts-designator   image:  ivct/ts-designator:1.0.2-SNAPSHOT  
+MountPoint:     /runtimeconfig  
+[Command]  [Arguments]
+cp                 -r /root/conf/TestSuites/TS_Designator-1.0.2-SNAPSHOT /runtimeconfig/TestSuites
+
+### Execution of images for deployments and services
+
+####  31_activemq_deployment  
+Name:   activemq     image: rmohr/activemq:5.14.5-alpine  
+Variables: no variables necessary but we use for test purposes IVCT_HOME ,  IVCT_CONF  
+Ports:  activemq  61616  ,  activemq-web 8161     TCP  
+MountPoint:  /root/conf  ( not  necessary but for  test purposes /root/conf to the NFS-Volume ) 
+
+#### 32_activemq_service  
+Name:  activemqsrvc     app: activemq  
+Ports:  activemq "61616"   61616     "8161"   8161
+
+#### 33_logsink_deployment  
+Name: logsink               image:  ivct/logsink:4.1.0  
+Variables: IVCT_HOME  /root/conf                     IVCT_CONF   /root/conf/IVCT.properties  
+                 ACTIVEMQ_HOST:  activemq           ACTIVEMQ_PORT:   61616  
+MountPoint:  /root/conf  
+ &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp;  &nbsp;  &nbsp;  &nbsp; /logs  
+
+( The logs are “in" the logsink container in /logs/LogSink.log  
+to see them in the shared NFS volume we add a mountpoint: /logs with SubPath logs )
+
+It may be necessary to specify the IP of the running activemq in the ACTIVEMQ_HOST variable:  
+       e.g. ACTIVEMQ_HOST: &nbsp;  &nbsp;  &nbsp; 10.244.0.62
 
 
