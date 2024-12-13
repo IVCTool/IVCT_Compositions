@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logsink
+  # namespace: brf-test-namespace
+  labels:
+    app: logsink
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: logsink
+  template:
+    metadata:
+      labels:
+        app: logsink
+    spec:
+      containers:
+        - name: logsink
+          image: ivct/logsink:4.1.0
+          env:
+            - name: ACTIVEMQ_HOST
+              value: activemq
+            - name: ACTIVEMQ_PORT
+              value: "61616"
+            - name: IVCT_HOME
+              value: /root/conf/
+            - name: IVCT_CONF
+              value: /root/conf/IVCT.properties
+          imagePullPolicy: Always
+          volumeMounts:
+            - mountPath: /root/conf
+              name: vol0
+            - mountPath: /logs
+              name: vol0
+              subPath: logs
+      restartPolicy: Always
+      volumes:
+        - name: vol0
+          persistentVolumeClaim:
+            claimName: nfs-pv-claim

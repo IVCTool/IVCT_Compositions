@@ -1,0 +1,41 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: activemq
+  # namespace: brf-test-namespace
+  labels:
+    app: activemq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: activemq
+  template:
+    metadata:
+      labels:
+        app: activemq
+    spec:
+      containers:
+        - name: activemq
+          image: rmohr/activemq:5.14.5-alpine
+          env:
+            - name: IVCT_HOME
+              value: /root/conf/
+            - name: IVCT_CONF
+              value: /root/conf/IVCT.properties
+          ports:
+            - containerPort: 61616
+              name: activemq
+              protocol: TCP
+            - containerPort: 8161
+              name: activemq-web
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /root/conf
+              name: vol0
+      restartPolicy: Always
+      volumes:
+        - name: vol0
+          persistentVolumeClaim:
+            claimName: nfs-pv-claim   # ivct-pvc3
