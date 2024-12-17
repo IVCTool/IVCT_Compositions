@@ -2,42 +2,49 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: logsink
+  name: gui
   # namespace: brf-test-namespace
-  labels:
-    app: logsink
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: logsink
+      app: gui
   template:
     metadata:
       labels:
-        app: logsink
+        app: gui
     spec:
       containers:
-        - name: logsink
-          image: ivct/logsink:4.1.0
+        - name: gui-co
+          image: ivct/gui:4.1.0
+          imagePullPolicy: Always
           env:
             - name: ACTIVEMQ_HOST
-              # value: activemq
+              #value: activemq
               value: "10.244.0.77"
             - name: ACTIVEMQ_PORT
               value: "61616"
             - name: IVCT_HOME
-              value: /root/conf/
+              value: /root/conf
             - name: IVCT_CONF
               value: /root/conf/IVCT.properties
-          imagePullPolicy: Always
+
+            - name: PRTI1516E_HOME
+              value: /root/conf/prti1516e
+            - name: LRC_HOME
+              value: /root/conf/prti1516e
+            - name: LRC_CLASSPATH
+              value: /root/conf/prti1516e/lib/prti1516e.jar
+
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+              name: ivctgui
           volumeMounts:
             - mountPath: /root/conf
-              name: vol0
-            - mountPath: /logs
-              name: vol0
-              subPath: logs
+              name: runtime-config
       restartPolicy: Always
       volumes:
-        - name: vol0
+        - name: runtime-config
           persistentVolumeClaim:
             claimName: nfs-pv-claim

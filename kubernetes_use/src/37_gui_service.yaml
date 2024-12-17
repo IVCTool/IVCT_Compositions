@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: guisrvc
+  labels:
+    app: gui
+  # namespace: brf-test-namespace
+spec:
+  type: NodePort
+  ports:
+    - name: "gui-port"
+      port: 8080
+  selector:
+    app: gui

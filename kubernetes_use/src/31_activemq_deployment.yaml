@@ -28,9 +28,9 @@ spec:
             - containerPort: 61616
               name: activemq
               protocol: TCP
-            - containerPort: 8161
-              name: activemq-web
-              protocol: TCP
+            #- containerPort: 8161
+            #  name: activemq-web
+            #  protocol: TCP
           volumeMounts:
             - mountPath: /root/conf
               name: vol0
