@@ -160,4 +160,9 @@ Rancher: Via the menu item Services you can see the services started for each na
     and can read out the URL to reach this service in the browser.  
 Kubectl:   “minikube service list” shows the services provided  
 
+### Reach the IVCT-GUI  
+
+Rancher: Via the menu item Services you can see the services started for each namespace, and can read out the URL to reach this service in the browser.  
+Kubectl:   “minikube service list” shows the services provided.
+
 
