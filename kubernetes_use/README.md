@@ -133,4 +133,31 @@ to see them in the shared NFS volume we add a mountpoint: /logs with SubPath log
 It may be necessary to specify the IP of the running activemq in the ACTIVEMQ_HOST variable:  
        e.g. ACTIVEMQ_HOST: &nbsp;  &nbsp;  &nbsp; 10.244.0.62
 
+ #### 36_gui_deployment
+Name:  gui    &nbsp;  &nbsp;  &nbsp;  image:   ivct/gui:4.1.0 
+Variables:  
+&nbsp;  &nbsp;  &nbsp; ACTIVEMQ_HOST:  &nbsp;   activemq    ( or IP of activemq deployment)  
+&nbsp;  &nbsp;  &nbsp; ACTIVEMQ_PORT:   &nbsp;  "61616"  
+&nbsp;  &nbsp;  &nbsp; IVCT_HOME:   &nbsp;   /root/conf  
+&nbsp;  &nbsp;  &nbsp; IVCT_CONF:   &nbsp;    /root/conf/IVCT.properties  
+&nbsp;  &nbsp;  &nbsp; PRTI1516E_HOME:  &nbsp;  /root/conf/prti1516e  
+&nbsp;  &nbsp;  &nbsp; LRC_HOME:    &nbsp;    /root/conf/prti1516e  
+&nbsp;  &nbsp;  &nbsp; LRC_CLASSPATH:  &nbsp;   /root/conf/prti1516e/lib/prti1516e.jar  
+
+It may be necessary to specify the IP of the running activemq in the ACTIVEMQ_HOST variable:  
+       e.g. ACTIVEMQ_HOST: &nbsp;  &nbsp;  &nbsp; 10.244.0.62
+
+Ports:  "ivctgui"   8080  
+MountPoint:  /root/conf 
+
+
+#### 37_gui_service        Service 
+name: guisrvc  
+Ports       type:    NodePort  
+ &nbsp;  &nbsp;  &nbsp; &nbsp;  &nbsp;    ports:  -name:"gui-port"    port: 8080         
+                                                
+Rancher: Via the menu item Services you can see the services started for each namespace, 
+    and can read out the URL to reach this service in the browser.  
+Kubectl:   “minikube service list” shows the services provided  
+
 
