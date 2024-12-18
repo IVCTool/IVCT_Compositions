@@ -117,7 +117,7 @@ Ports:  activemq  61616  ,  activemq-web 8161     TCP
 MountPoint:  /root/conf  ( not  necessary but for  test purposes /root/conf to the NFS-Volume ) 
 
 #### 32_activemq_service  
-Name:  activemqsrvc     app: activemq  
+Name:  activemqs ( !)      app: activemq  
 Ports:  activemq "61616"   61616     "8161"   8161
 
 #### 33_logsink_deployment  
